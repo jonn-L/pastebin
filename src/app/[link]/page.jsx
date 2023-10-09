@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
-
+export default function NewLink() {    
   const router = useRouter();
   const [text, setText] = useState('');
+  const [buttonLabel, setButtonLabel] = useState('SAVED');
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,10 +30,11 @@ export default function Home() {
 
   function handleTextChange(e) {
     setText(e.target.value);
+    setButtonLabel('SAVE');
   }
 
   function handleReset() {
-    setText('');
+    router.push('/');
   }
 
   return (
@@ -42,7 +43,7 @@ export default function Home() {
       <form onSubmit={handleSubmit}>
         <div className="buttons">
         <button type="reset" onClick={handleReset}>[ NEW ]</button>
-        <button type="submit">[ SAVE ]</button>
+        <button type="submit">[ {buttonLabel} ]</button>
         </div>
         
         <textarea value={text} onChange={handleTextChange}></textarea>

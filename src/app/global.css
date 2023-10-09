@@ -6,6 +6,13 @@ body {
   margin: 0;
 }
 
+button {
+  background-color: #282828;
+  color: white;
+  border-style: none;
+  font-size: medium;
+}
+
 h1 {
   color: white;
 }
@@ -16,8 +23,10 @@ form {
   height: 100vh;
 }
 
-button {
-  align-self: flex-start;
+.buttons {
+  padding: 5px;
+  display: flex;
+  gap: 10px;
 }
 
 textarea {
@@ -25,4 +34,10 @@ textarea {
   background-color:  #3f3f3f ;
   color: white;
   resize: none;
+  border: none;
+  outline: none;
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: larger;
 }
