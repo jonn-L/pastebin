@@ -1,12 +1,5 @@
 version: 'latest'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: pastebin
-    ports: 
-      - '3000:3000'
   db:
     image: mysql:latest
     container_name: pastebin_db
@@ -15,6 +8,16 @@ services:
       MYSQL_DATABASE: pastebin_db
       MYSQL_USER: jonlumi
       MYSQL_PASSWORD: legen_mamaqi
+    volumes:
+      - ./src/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_volume:/var/lib/mysql
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pastebin
+    ports: 
+      - '3000:3000'
       
 volumes:
-  pastebin_db_volume:
+  db_volume:
