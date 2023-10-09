@@ -1,4 +1,4 @@
-import pool from '../../database/db'
+import pool from '@/database/db';
 
 async function generateLink(length) {
 	let result = '';
@@ -12,34 +12,13 @@ async function generateLink(length) {
 	return result;
 }
 
-async function addLink(text) {
-
-	try {
-		let link = await generateLink(6);
-		while (true) {
-			const [rows, fields] = await pool.execute('SELECT * FROM links WHERE links = ?', [link]);
-
-			if (rows.length == 0) {
-				break;
-			}
-			link = generateLink(6);
-		}
-
-		const [rows, fields] = await pool.execute('INSERT INTO links (link, text) VALUES (?, ?)', [link, text]);
-	} catch (err) {
-		console.error(err);
-	}
-
-	return link;
-}
-
 export async function POST(request) {
 	const body = await request.json();
 	
 	const text = body.text;
-	const link = await addLink(text);
+	const link = await generateLink(6);
 
-	console.log(link);
+	const [results, fields] = await pool.execute('INSERT INTO links (link, text) VALUES (?, ?)', [link, text]);
 
 	return Response.json({ link: link }, { status: 200 });
 }
