@@ -16,9 +16,17 @@ export async function POST(request) {
 	const body = await request.json();
 	
 	const text = body.text;
-	const link = await generateLink(6);
+	let link = await generateLink(10);
 
-	const [results, fields] = await pool.execute('INSERT INTO links (link, text) VALUES (?, ?)', [link, text]);
+	while (1) {
+		const [results, fields] = await pool.execute('SELECT * FROM links WHERE link=?', [link]);
+		if (results.length === 0) {
+			const [results, fields] = await pool.execute('INSERT INTO links (link, text) VALUES (?, ?)', [link, text]);
+			break;
+		}
+		link = await generateLink(10);
+	}
+
 
 	return Response.json({ link: link }, { status: 200 });
 }
