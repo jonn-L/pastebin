@@ -9,7 +9,7 @@ export async function GET(request) {
         return Response.json({ paste: paste }, { status: 404 });
     }
 
-    [results, fields] = await pool.execute('SELECT paste FROM pastes WHERE paste=?', [paste]);
+    [results, fields] = await pool.execute('SELECT text FROM pastes WHERE paste=?', [paste]);
     const text = results[0].text;
 
 	return Response.json({ text: text }, { status: 200 });

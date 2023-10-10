@@ -2,3 +2,5 @@ CREATE TABLE IF NOT EXISTS pastes (
     paste VARCHAR(10) PRIMARY KEY,
     text TEXT
 );
+
+DELETE FROM pastes;
