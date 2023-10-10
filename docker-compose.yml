@@ -9,8 +9,8 @@ services:
       MYSQL_USER: jonlumi
       MYSQL_PASSWORD: legen_mamaqi
     volumes:
-      - ./src/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_volume:/var/lib/mysql
+      - "./src/database/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "db_volume:/var/lib/mysql"
   app:
     build:
       context: .

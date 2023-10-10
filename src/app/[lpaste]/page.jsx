@@ -2,30 +2,38 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-async function getText(link) {
-  const response = await fetch(`../api/text/?link=${link}`);
+async function getText(paste) {
+  const response = await fetch(`../../api/text/?paste=${paste}`);
   const body = await response.json();
+  if (response.status === 404) {
+    alert(`The paste '${body.paste}' does not exist!`);
+    return null;
+  }
   const text = body.text;
-  console.log(text);
 
   return text;
 }
 
-export default function NewLink({ params }) {    
+export default function NewPaste({ params }) {    
   const router = useRouter();
+  const [initialText, setInitialText] = useState('');
   const [text, setText] = useState('');
   const [buttonLabel, setButtonLabel] = useState('SAVED');
 
   useEffect(async () => {
-    const result = await getText(params.link);
+    const result = await getText(params.paste);
+
+    if (result === null) router.push('/');
+
     setText(result);
+    setInitialText(result);
   }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
     setText(e.target.value);
 
-    if (text !== '') {
+    if ((text !== '') && (text !== initialText)) {
       fetch("/api/submit/", {
         method: "POST",
         body: JSON.stringify({ text: text })
@@ -33,17 +41,14 @@ export default function NewLink({ params }) {
       .then(async response => {
         const data = await response.json();
         console.log(data);
-        const link = data.link;
+        const paste = data.paste;
         if (router) {
-          router.push(`/${link}`);
+          router.push(`/${paste}`);
         }
       })
       .catch(err => {
         console.error(err);
       });
-    }
-    else {
-      alert('YOU MUST ENTER SOME TEXT TO SAVE');
     }
   }
 

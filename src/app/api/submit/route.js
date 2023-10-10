@@ -1,6 +1,6 @@
 import pool from '@/database/db';
 
-async function generateLink(length) {
+async function generatePaste(length) {
 	let result = '';
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	const charactersLength = characters.length;
@@ -16,17 +16,17 @@ export async function POST(request) {
 	const body = await request.json();
 	
 	const text = body.text;
-	let link = await generateLink(10);
+	let paste = await generatePaste(10);
 
 	while (1) {
-		const [results, fields] = await pool.execute('SELECT * FROM links WHERE link=?', [link]);
+		const [results, fields] = await pool.execute('SELECT * FROM pastes WHERE paste=?', [paste]);
 		if (results.length === 0) {
-			const [results, fields] = await pool.execute('INSERT INTO links (link, text) VALUES (?, ?)', [link, text]);
+			const [results, fields] = await pool.execute('INSERT INTO pastes (paste, text) VALUES (?, ?)', [paste, text]);
 			break;
 		}
-		link = await generateLink(10);
+		paste = await generatePaste(10);
 	}
 
 
-	return Response.json({ link: link }, { status: 200 });
+	return Response.json({ paste: paste }, { status: 200 });
 }

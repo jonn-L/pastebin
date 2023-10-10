@@ -1,4 +1,0 @@
-CREATE TABLE IF NOT EXISTS links (
-    link VARCHAR(6) PRIMARY KEY,
-    text TEXT
-);

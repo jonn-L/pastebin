@@ -17,20 +17,15 @@ export default function Home() {
       })
       .then(async response => {
         const data = await response.json();
-        // console.log(data);
-        const link = data.link;
+        const paste = data.paste;
         if (router) {
-          router.push(`/${link}`);
+          router.push(`/${paste}`);
         }
       })
       .catch(err => {
         console.error(err);
       });
     }
-    else {
-      alert('You must enter something before saving');
-    }
-
   }
 
   function handleTextChange(e) {
