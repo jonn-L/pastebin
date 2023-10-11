@@ -3,4 +3,5 @@ CREATE TABLE IF NOT EXISTS pastes (
     text TEXT
 );
 
-DELETE FROM pastes;
+INSERT IGNORE INTO pastes (paste, text) VALUES 
+    ("paste123", "Hello! This is just an example paste. Click 'new' to start your own paste.");

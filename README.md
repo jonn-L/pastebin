@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pastebin
 
-## Getting Started
+This is a simple Pastebin application built with NextJs and Docker. It allows users to create and store plain text and/or code snippets and then share them with others.
 
-First, run the development server:
+## Prerequisites
+- Have [Docker](https://www.docker.com/) installed.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## How to start using the app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Start the application by entering the following on the terminal:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+    ```
+    docker compose up --build
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    This command will build the Docker images for the application and database, create the necessary containers, create a network for communication between the containers, mount a volume to the database container for data persistence, and then finally start the services.
 
-## Learn More
+2. Access the Pastebin application in a web browser at [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Create a new paste by entering text in the editor and clicking 'save' to generate a paste ID for it.
+- Access a previous paste by appending the paste ID to the URL (e.g., [http://localhost:3000/paste123](http://localhost:3000/paste123)).
+- Select a programming language for syntax highlighting and auto-complete.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
+- On subsequent runs, the '--build' flag can be omitted unless changes have been made to the Dockerfiles or the build context.
+- To remove all the creted containers, networks, and volumes use this command:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```
+    docker compose down -v
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    Doing this will also delete all the pastes that have been saved up to that point. 

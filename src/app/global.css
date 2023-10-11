@@ -7,10 +7,15 @@ body {
 }
 
 button {
+  padding: 10px;
   background-color: #282828;
   color: white;
   border-style: none;
   font-size: medium;
+}
+
+button:hover {
+  background-color: rgb(36, 33, 51);
 }
 
 h1 {
@@ -24,20 +29,33 @@ form {
 }
 
 .buttons {
-  padding: 5px;
   display: flex;
-  gap: 10px;
 }
 
-textarea {
-  flex: 1;
-  background-color:  #3f3f3f ;
-  color: white;
-  resize: none;
-  border: none;
-  outline: none;
-  padding-left: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: larger;
+.textarea {
+  background-color:#1e1e1e;
+  padding-top: 10px;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.dropdown-content button {
+  width: 100%;
+  color: white;
+  text-decoration: none;
+  display: block;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+

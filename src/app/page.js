@@ -1,15 +1,30 @@
 'use client'
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Editor from '@monaco-editor/react';
+
+// List of supported programming languages for the editor
+const supportedLanguages = [
+  'javascript',
+  'typescript',
+  'html',
+  'css',
+  'cpp',
+  'python',
+  'java',
+  'go',
+  'markdown',
+  'dockerfile',
+  'plain'
+];
 
 export default function Home() {
-  const router = useRouter();
   const [text, setText] = useState('');
+  const [language, setLanguage] = useState('plain');
 
   function handleSubmit(e) {
     e.preventDefault();
-    setText(e.target.value);
 
+    // Check if there is text to save and send a POST request to the server
     if (text !== '') {
       fetch("/api/submit/", {
         method: "POST",
@@ -18,9 +33,8 @@ export default function Home() {
       .then(async response => {
         const data = await response.json();
         const paste = data.paste;
-        if (router) {
-          router.push(`/${paste}`);
-        }
+        await navigator.clipboard.writeText(`http://localhost:3000/${paste}`);
+        window.location.href = `/${paste}`;
       })
       .catch(err => {
         console.error(err);
@@ -28,26 +42,48 @@ export default function Home() {
     }
   }
 
-  function handleTextChange(e) {
-    setText(e.target.value);
+  function handleTextChange(text) {
+    setText(text);
   }
 
   function handleReset() {
     setText('');
   }
 
+  const handleLanguageChange = (language) => {
+    setLanguage(language);
+  }
+
   return (
     <main>
-
       <form onSubmit={handleSubmit}>
         <div className="buttons">
-        <button type="reset" onClick={handleReset}>[ NEW ]</button>
-        <button type="submit">[ SAVE ]</button>
+          <button type="reset" onClick={handleReset}>[ new ]</button>
+          <button type="submit">[ save ]</button>
+
+          {/* Dropdown for selecting the programming language */}
+          <div className="dropdown">
+            <button>[ language : {language} ]</button>
+            <div className="dropdown-content">
+              {/* Display supported languages as options in the dropdown */}
+              {supportedLanguages.map((language) => (
+                <button onClick={() => handleLanguageChange(language)}>
+                  {language}
+                </button>
+              ))}
+            </div>
+          </div> 
         </div>
         
-        <textarea value={text} onChange={handleTextChange}></textarea>
+        {/* Code editor component */}
+        <Editor 
+          className="textarea" 
+          onChange={handleTextChange}
+          value={text}
+          theme="vs-dark" 
+          language={language}
+        />
       </form>
-
     </main>
   )
 }

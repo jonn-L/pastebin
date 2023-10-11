@@ -1,5 +1,7 @@
+// Import the 'pool' object for database access
 import pool from '@/database/db';
 
+// Function to generate a random paste of a specified length
 async function generatePaste(length) {
 	let result = '';
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,19 +16,24 @@ async function generatePaste(length) {
 
 export async function POST(request) {
 	const body = await request.json();
-	
 	const text = body.text;
+
 	let paste = await generatePaste(10);
 
+	// Infinite loop to generate a unique 'paste' value
 	while (1) {
+		// Check if the generated 'paste' already exists in the database
 		const [results, fields] = await pool.execute('SELECT * FROM pastes WHERE paste=?', [paste]);
+
+		// If the 'paste' is not found in the database, insert it and break the loop
 		if (results.length === 0) {
 			const [results, fields] = await pool.execute('INSERT INTO pastes (paste, text) VALUES (?, ?)', [paste, text]);
 			break;
 		}
+		
+		// If the 'paste' already exists, generate a new one and continue the loop
 		paste = await generatePaste(10);
 	}
-
 
 	return Response.json({ paste: paste }, { status: 200 });
 }
