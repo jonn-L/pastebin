@@ -37,13 +37,15 @@ export default function NewPaste({ params }) {
   const [language, setLanguage] = useState('plain');
 
   // Effect hook to fetch and set initial text when the component mounts
-  useEffect(async () => {
-    const result = await getText(params.paste);
+  useEffect(() => {
+    (async () => {
+      const result = await getText(params.paste);
 
     if (result === null) window.location.href = "/";
 
-    setText(result);
-    setInitialText(result);
+      setText(result);
+      setInitialText(result);
+    })();
   }, []);
 
   function handleSubmit(e) {
@@ -94,7 +96,7 @@ export default function NewPaste({ params }) {
             <div className="dropdown-content">
               {/* Display supported languages as options in the dropdown */}
               {supportedLanguages.map((language) => (
-                <button onClick={() => handleLanguageChange(language)}>
+                <button key={language} onClick={() => handleLanguageChange(language)}>
                   {language}
                 </button>
               ))}

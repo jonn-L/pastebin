@@ -67,7 +67,7 @@ export default function Home() {
             <div className="dropdown-content">
               {/* Display supported languages as options in the dropdown */}
               {supportedLanguages.map((language) => (
-                <button onClick={() => handleLanguageChange(language)}>
+                <button key={language} onClick={() => handleLanguageChange(language)}>
                   {language}
                 </button>
               ))}

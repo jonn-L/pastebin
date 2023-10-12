@@ -17,6 +17,5 @@ export async function GET(request) {
     // Retrieve the 'text' associated with the found 'paste' from the database
     [results, fields] = await pool.execute('SELECT text FROM pastes WHERE paste=?', [paste]);
     const text = results[0].text;
-
     return Response.json({ text: text }, { status: 200 });
 }
