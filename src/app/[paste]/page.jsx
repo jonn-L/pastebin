@@ -60,7 +60,7 @@ export default function NewPaste({ params }) {
       .then(async response => {
         const data = await response.json();
         const paste = data.paste;
-        const host = window.location.host;
+        const host = window.location.hostname;
         await navigator.clipboard.writeText(`${host}/${paste}`);
         window.location.href = `/${paste}`;
       })
