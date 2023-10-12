@@ -33,7 +33,8 @@ export default function Home() {
       .then(async response => {
         const data = await response.json();
         const paste = data.paste;
-        await navigator.clipboard.writeText(`http://localhost:3000/${paste}`);
+        const host = window.location.host;
+        await navigator.clipboard.writeText(`${host}/${paste}`);
         window.location.href = `/${paste}`;
       })
       .catch(err => {
