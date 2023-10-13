@@ -1,21 +1,32 @@
 # Pastebin
 
-This is a simple Pastebin application built with NextJs and Docker. It allows users to create and store plain text and/or code snippets and then share them with others.
+This is a pastebin application built with Next.js and Docker. It allows users to create and store plain text and/or code snippets and then share them with others.
 
 ## Prerequisites
-- Have [Docker](https://www.docker.com/) installed.
+- Have [Node.js](https://nodejs.org/en/download) installed.
+- Have [Docker](https://docs.docker.com/get-docker/) installed.
 
 ## How to start using the app
 
-1. Start the application by entering the following on the terminal:
+1. After cloning the repo, run the command below:
+
+    ```
+    npm -i
+    ```
+    
+    This will install all the required packages for the app. <br><br>
+
+
+2. Then, start the application by running the following on the terminal:
 
     ```
     docker compose up --build
     ```
 
-    This command will build the Docker images for the application and database, create the necessary containers, create a network for communication between the containers, mount a volume to the database container for data persistence, and then finally start the services.
+    This command will build the Docker images for the application and database, create the necessary containers, create a network for communication between the containers, mount a volume to the database container for data persistence, and then finally start the services. <br><br>
 
-2. Access the Pastebin application in a web browser at [http://localhost:3000](http://localhost:3000).
+
+3. Access the pastebin application in a web browser at [http://localhost:3000](http://localhost:3000).
 
 ## Features
 
@@ -26,7 +37,7 @@ This is a simple Pastebin application built with NextJs and Docker. It allows us
 ## Notes
 
 - On subsequent runs, the '--build' flag can be omitted unless changes have been made to the Dockerfiles or the build context.
-- To remove all the creted containers, networks, and volumes use this command:
+- To remove all the created containers, networks, and volumes use this command:
 
     ```
     docker compose down -v
