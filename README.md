@@ -4,7 +4,7 @@ This is a pastebin application built with Next.js and Docker. It allows users to
 
 ## Prerequisites
 - Have [Node.js](https://nodejs.org/en/download) installed.
-- Have [Docker](https://docs.docker.com/get-docker/) installed.
+- Have [Docker](https://docs.docker.com/get-docker) installed.
 
 ## How to start using the app
 
