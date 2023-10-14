@@ -1,6 +1,6 @@
 'use client';
 import Editor from '@monaco-editor/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // List of supported programming languages for the editor
 const supportedLanguages = [
@@ -23,6 +23,9 @@ export default function PasteInput({ initialLanguage = "", initialText = "", ini
     const [text, setText] = useState(initialText);
     const [language, setLanguage] = useState(initialLanguage);
 
+    useEffect(() => {
+      if ((text !== "") &&  (text === initialText) && (language === initialLanguage)) setButtonLabel('saved');
+    }, [text]);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -49,7 +52,6 @@ export default function PasteInput({ initialLanguage = "", initialText = "", ini
       function handleTextChange(text) {
         setText(text);
         setButtonLabel('save');
-        if ((text === initialText) && (language === initialLanguage)) setButtonLabel('saved');
       }
     
       function handleReset() {
@@ -59,7 +61,6 @@ export default function PasteInput({ initialLanguage = "", initialText = "", ini
       const handleLanguageChange = (language) => {
         setLanguage(language);
         setButtonLabel('save');
-        if ((text === initialText) && (language === initialLanguage)) setButtonLabel('saved');
       }
 
     return <form onSubmit={handleSubmit}>
