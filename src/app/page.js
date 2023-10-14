@@ -23,17 +23,16 @@ export default function Home() {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     // Check if there is text to save and send a POST request to the server
     if (text !== '') {
       fetch("/api/submit/", {
         method: "POST",
-        body: JSON.stringify({ text: text })
+        body: JSON.stringify({ text: text, language: language })
       })
       .then(async response => {
         const data = await response.json();
         const paste = data.paste;
-        const host = window.location.hostname;
+        const host = window.location.host;
         await navigator.clipboard.writeText(`${host}/${paste}`);
         window.location.href = `/${paste}`;
       })
@@ -68,7 +67,7 @@ export default function Home() {
             <div className="dropdown-content">
               {/* Display supported languages as options in the dropdown */}
               {supportedLanguages.map((language) => (
-                <button key={language} onClick={() => handleLanguageChange(language)}>
+                <button type="button" key={language} onClick={() => handleLanguageChange(language)}>
                   {language}
                 </button>
               ))}

@@ -17,8 +17,11 @@ async function generatePaste(length) {
 export async function POST(request) {
 	const body = await request.json();
 	const text = body.text;
+	const language = body.language;
 
 	let paste = await generatePaste(10);
+
+	// console.log(paste);
 
 	// Infinite loop to generate a unique 'paste' value
 	while (1) {
@@ -27,7 +30,7 @@ export async function POST(request) {
 
 		// If the 'paste' is not found in the database, insert it and break the loop
 		if (results.length === 0) {
-			const [results, fields] = await pool.execute('INSERT INTO pastes (paste, text) VALUES (?, ?)', [paste, text]);
+			const [results, fields] = await pool.execute('INSERT INTO pastes (paste, text, language) VALUES (?, ?, ?)', [paste, text, language]);
 			break;
 		}
 		

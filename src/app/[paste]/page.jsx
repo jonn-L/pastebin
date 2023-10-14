@@ -26,25 +26,30 @@ async function getText(paste) {
     return null;
   }
   const text = body.text;
-  return text;
+  const language = body.language;
+  return [text, language];
 }
 
 // NewPaste component that displays the editor and handles user interactions
 export default function NewPaste({ params }) {
-  const [initialText, setInitialText] = useState('');
-  const [text, setText] = useState('');
   const [buttonLabel, setButtonLabel] = useState('saved');
-  const [language, setLanguage] = useState('plain');
+  const [text, setText] = useState('');
+  const [initialText, setInitialText] = useState('');
+  const [language, setLanguage] = useState('');
+  const [initialLanguage, setInitialLanguage] = useState('');
+
 
   // Effect hook to fetch and set initial text when the component mounts
   useEffect(() => {
     (async () => {
       const result = await getText(params.paste);
 
-    if (result === null) window.location.href = "/";
+      if (result === null) window.location.href = "/";
 
-      setText(result);
-      setInitialText(result);
+      setText(result[0]);
+      setInitialText(result[0]);
+      setLanguage(result[1]);
+      setInitialLanguage(result[1]);
     })();
   }, []);
 
@@ -52,15 +57,15 @@ export default function NewPaste({ params }) {
     e.preventDefault();
 
     // Check if text is modified and send a POST request to save the changes
-    if ((text !== '') && (text !== initialText)) {
+    if ((text !== '') && (buttonLabel !== 'saved')) {
       fetch("/api/submit/", {
         method: "POST",
-        body: JSON.stringify({ text: text })
+        body: JSON.stringify({ text: text, language: language })
       })
       .then(async response => {
         const data = await response.json();
         const paste = data.paste;
-        const host = window.location.hostname;
+        const host = window.location.host;
         await navigator.clipboard.writeText(`${host}/${paste}`);
         window.location.href = `/${paste}`;
       })
@@ -73,7 +78,7 @@ export default function NewPaste({ params }) {
   function handleTextChange(text) {
     setText(text);
     setButtonLabel('save');
-    if (text === initialText) setButtonLabel('saved');
+    if ((text === initialText) && (language === initialLanguage)) setButtonLabel('saved');
   }
 
   function handleReset() {
@@ -82,6 +87,8 @@ export default function NewPaste({ params }) {
 
   const handleLanguageChange = (language) => {
     setLanguage(language);
+    setButtonLabel('save');
+    if ((text === initialText) && (language === initialLanguage)) setButtonLabel('saved');
   }
 
   return (
@@ -97,7 +104,7 @@ export default function NewPaste({ params }) {
             <div className="dropdown-content">
               {/* Display supported languages as options in the dropdown */}
               {supportedLanguages.map((language) => (
-                <button key={language} onClick={() => handleLanguageChange(language)}>
+                <button type="button" key={language} onClick={() => handleLanguageChange(language)}>
                   {language}
                 </button>
               ))}
